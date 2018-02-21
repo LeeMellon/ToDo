@@ -42,6 +42,26 @@ namespace ToDoList.Tests
         }
 
         [TestMethod]
+       public void Save_DatabaseAssignsIdToObject_Id()
+       {
+         //Arrange
+         DateTime newDate = new DateTime (2018, 1, 1);
+         Item testItem = new Item("Mow the lawn",newDate, 1);
+         testItem.Save();
+
+         //Act
+         Item savedItem = Item.GetAll()[0];
+
+         int result = savedItem.GetId();
+         int testId = testItem.GetId();
+
+         //Assert
+         Assert.AreEqual(testId, result);
+       }
+
+
+
+        [TestMethod]
         public void GetAll_ReturnsItems_Int()
         {
           //Arrange
