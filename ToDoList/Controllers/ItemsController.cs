@@ -32,7 +32,7 @@ namespace ToDoList.Controllers
         {
           string formDate = Request.Form["due-date"];
           DateTime newDate = DateTime.Parse(formDate);
-          Item newItem = new Item (Request.Form["new-item"], newDate);
+          Item newItem = new Item (Request.Form["new-item"], newDate, 1);
           newItem.Save();
           List<Item> allItems = Item.GetAll();
           return RedirectToAction("Index", allItems);

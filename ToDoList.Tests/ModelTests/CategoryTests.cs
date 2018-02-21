@@ -10,7 +10,7 @@ namespace ToDoList.Tests
   {
         public CategoryTests()
         {
-            DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=3306;database=todo_test;";
+            DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=todo_test;";
         }
 
        [TestMethod]
@@ -93,10 +93,11 @@ namespace ToDoList.Tests
     {
       Category testCategory = new Category("Household chores");
       testCategory.Save();
-
-      Item firstItem = new Item("Mow the lawn", testCategory.GetId());
+      DateTime newDate01 = new DateTime (2018, 1, 1);
+      DateTime newDate02 = new DateTime (2018, 1, 2);
+      Item firstItem = new Item("Mow the lawn", newDate01, testCategory.GetId());
       firstItem.Save();
-      Item secondItem = new Item("Do the dishes", testCategory.GetId());
+      Item secondItem = new Item("Do the dishes", newDate02, testCategory.GetId());
       secondItem.Save();
 
 

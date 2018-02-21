@@ -123,17 +123,17 @@ namespace ToDoList.Models
      conn.Open();
 
      var cmd = conn.CreateCommand() as MySqlCommand;
-     cmd.CommandText = @"INSERT INTO items (description, dueDate, category_id) VALUES (@ItemDescription, @ItemDueDate, @category_id);";
+     cmd.CommandText = @"INSERT INTO items (description, due_date, category_id) VALUES (@ItemDescription, @ItemDueDate, @category_id);";
 
      MySqlParameter description = new MySqlParameter();
      description.ParameterName = "@ItemDescription";
      description.Value = this._description;
      cmd.Parameters.Add(description);
 
-     MySqlParameter dueDate = new MySqlParameter();
-     dueDate.ParameterName = "@ItemDueDate";
-     dueDate.Value = this._dueDate;
-     cmd.Parameters.Add(dueDate);
+     MySqlParameter due_date = new MySqlParameter();
+     due_date.ParameterName = "@ItemDueDate";
+     due_date.Value = this._dueDate;
+     cmd.Parameters.Add(due_date);
 
 
      MySqlParameter categoryId = new MySqlParameter();
@@ -197,7 +197,7 @@ namespace ToDoList.Models
           MySqlConnection conn = DB.Connection();
           conn.Open();
           MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-          cmd.CommandText = @"SELECT * FROM items ORDER BY duedate ASC;" ;
+          cmd.CommandText = @"SELECT * FROM items ORDER BY due_date ASC;" ;
           MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
           while(rdr.Read())
           {

@@ -33,7 +33,7 @@ namespace ToDoList.Tests
           //Arrange
           string description = "Walk the dog.";
           DateTime newDate = new DateTime (2018, 1, 1);
-          Item newItem = new Item(description, newDate);
+          Item newItem = new Item(description, newDate, 1);
           //Act
           string result = newItem.GetDescription();
 
@@ -46,7 +46,7 @@ namespace ToDoList.Tests
        {
          //Arrange
          DateTime newDate = new DateTime (2018, 1, 1);
-         Item testItem = new Item("Mow the lawn",newDate, 1);
+         Item testItem = new Item("Mow the lawn",newDate, 1, 1);
          testItem.Save();
 
          //Act
@@ -69,8 +69,8 @@ namespace ToDoList.Tests
           DateTime newDate02 = new DateTime (2018, 1, 2);
           string description01 = "Walk the dog";
           string description02 = "Wash the dishes";
-          Item newItem1 = new Item(description01, newDate01);
-          Item newItem2 = new Item(description02, newDate02);
+          Item newItem1 = new Item(description01, newDate01, 1);
+          Item newItem2 = new Item(description02, newDate02, 2);
           List<Item> newList = new List<Item> { newItem1, newItem2 };
           newItem1.Save();
           newItem2.Save();
@@ -93,7 +93,7 @@ namespace ToDoList.Tests
         {
           //Arrange
           DateTime newDate03 = new DateTime (2018, 1, 4);
-          Item testItem = new Item("Mow the lawn", newDate03);
+          Item testItem = new Item("Mow the lawn", newDate03, 1);
 
           //Act
           testItem.Save();
@@ -109,7 +109,7 @@ namespace ToDoList.Tests
         {
           //Arrange
           DateTime newDate04 = new DateTime (2018, 1, 5);
-          Item testItem = new Item("Mow the lawn", newDate04);
+          Item testItem = new Item("Mow the lawn", newDate04, 1);
 
           //Act
           testItem.Save();
@@ -127,8 +127,8 @@ namespace ToDoList.Tests
         {
           // Arrange, Act
           DateTime newDate05 = new DateTime (2018, 1, 6);
-          Item firstItem = new Item("Mow the lawn",newDate05);
-          Item secondItem = new Item("Mow the lawn", newDate05);
+          Item firstItem = new Item("Mow the lawn",newDate05, 1);
+          Item secondItem = new Item("Mow the lawn", newDate05, 1);
 
           // Assert
           Assert.AreEqual(firstItem, secondItem);
@@ -139,7 +139,7 @@ namespace ToDoList.Tests
         {
           //Arrange
           DateTime newDate06 = new DateTime (2018, 1, 7);
-          Item testItem = new Item("Mow the lawn", newDate06);
+          Item testItem = new Item("Mow the lawn", newDate06, 1);
           testItem.Save();
 
           //Act
