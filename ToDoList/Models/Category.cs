@@ -13,6 +13,7 @@ namespace ToDoList.Models
             _name = name;
             _id = id;
         }
+
         public override bool Equals(System.Object otherCategory)
         {
             if (!(otherCategory is Category))
@@ -25,18 +26,22 @@ namespace ToDoList.Models
                 return this.GetId().Equals(newCategory.GetId());
             }
         }
+
         public override int GetHashCode()
         {
             return this.GetId().GetHashCode();
         }
+
         public string GetName()
         {
             return _name;
         }
+
         public int GetId()
         {
             return _id;
         }
+
         public void Save()
         {
             MySqlConnection conn = DB.Connection();
@@ -81,6 +86,7 @@ namespace ToDoList.Models
             }
             return allCategories;
         }
+
         public static Category Find(int id)
         {
             MySqlConnection conn = DB.Connection();
@@ -110,6 +116,7 @@ namespace ToDoList.Models
             }
             return newCategory;
         }
+
         public static void DeleteAll()
         {
             MySqlConnection conn = DB.Connection();
@@ -123,36 +130,48 @@ namespace ToDoList.Models
                 conn.Dispose();
             }
         }
-        public List<Item> GetItems()
+
+        public static void DeleteItem(int id)
         {
-          List<Item> allCategoryItems = new List<Item> {};
+         MySqlConnection conn = DB.Connection();
+         conn.Open();
+
+         var cmd = conn.CreateCommand() as MySqlCommand;
+         cmd.CommandText = @"DELETE FROM items WHERE id = @id;";
+
+         MySqlParameter thisId = new MySqlParameter();
+         thisId.ParameterName = "@id";
+         thisId.Value = id;
+         cmd.Parameters.Add(thisId);
+         var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+
+         conn.Close();
+         if (conn != null)
+         {
+           conn.Dispose();
+         }
+        }
+        public static void DeleteCategory(int id)
+        {
           MySqlConnection conn = DB.Connection();
           conn.Open();
           var cmd = conn.CreateCommand() as MySqlCommand;
-          cmd.CommandText = @"SELECT * FROM items WHERE category_id = @category_id;";
+          // cmd.CommandText = @"DELETE FROM items WHERE category_id = @category_id;";
+          cmd.CommandText = @"DELETE FROM categories WHERE id = @category_id;";
+          System.Console.WriteLine(id);
 
           MySqlParameter categoryId = new MySqlParameter();
           categoryId.ParameterName = "@category_id";
-          categoryId.Value = this._id;
+          categoryId.Value = id;
           cmd.Parameters.Add(categoryId);
-
-
           var rdr = cmd.ExecuteReader() as MySqlDataReader;
-          while(rdr.Read())
-          {
-            int itemId = rdr.GetInt32(0);
-            string itemDescription = rdr.GetString(1);
-            DateTime itemDueDate = rdr.GetDateTime(2);
-            int itemCategoryId = rdr.GetInt32(3);
-            Item newItem = new Item(itemDescription, itemDueDate, itemCategoryId, itemId);
-            allCategoryItems.Add(newItem);
-          }
-          conn.Close();
+
+            conn.Close();
           if (conn != null)
           {
             conn.Dispose();
           }
-          return allCategoryItems;
         }
     }
 }

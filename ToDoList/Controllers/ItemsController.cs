@@ -7,65 +7,53 @@ namespace ToDoList.Controllers
     public class ItemsController : Controller
     {
 
-        [HttpGet("/items")]
-        public ActionResult Index()
+        [HttpGet("/items/{id}/new")]
+        public ActionResult CreateForm(int id)
         {
-          List<Item> allItems = Item.GetAll();
-          return View(allItems);
+          Category thisCategory = Category.Find(id);
+            return View(thisCategory);
         }
 
-        [HttpGet("/items/new")]
-        public ActionResult CreateForm()
-        {
-            return View();
-        }
-
-        [HttpGet("/items/urgent")]
-        public ActionResult OrderByDesc()
-        {
-          List<Item> allItems = Item.DateDesc();
-          return View("Index", allItems);
-        }
-
-        [HttpPost("/items")]
+        [HttpPost("/items/new")]
         public ActionResult Create()
         {
+          int formId = Convert.ToInt32(Request.Form["category_id"]);
           string formDate = Request.Form["due-date"];
           DateTime newDate = DateTime.Parse(formDate);
-          Item newItem = new Item (Request.Form["new-item"], newDate, 1);
+          Item newItem = new Item (Request.Form["new-item"], newDate, formId);
           newItem.Save();
-          List<Item> allItems = Item.GetAll();
-          return RedirectToAction("Index", allItems);
-        }
-
-        [HttpPost("/items/delete")]
-        public ActionResult DeleteAll()
-        {
-            Item.DeleteAll();
-            return View();
+          return RedirectToAction("Index","categories");
         }
 
         [HttpGet("/items/{id}/update")]
-       public ActionResult UpdateForm(int id)
-       {
-           Item thisItem = Item.Find(id);
-           return View(thisItem);
-       }
-
-       [HttpGet("/items/{id}")]
-        public ActionResult Details(int id)
+        public ActionResult UpdateForm(int id)
         {
-            Item item = Item.Find(id);
-            return View(item);
+          Item thisItem = Item.Find(id);
+          return View(thisItem);
         }
 
-
-       [HttpPost("/items/{id}/update")]
+        [HttpPost("/items/{id}/update")]
         public ActionResult Update(int id)
         {
-            Item thisItem = Item.Find(id);
-            thisItem.Edit(Request.Form["newname"]);
-            return RedirectToAction("Index");
+          Item thisItem = Item.Find(id);
+          thisItem.Edit(Request.Form["newname"]);
+          return RedirectToAction("index", "categories");
+        }
+
+        [HttpPost("/items/{id}/delete_all")]
+        public ActionResult DeleteAll(int id)
+        {
+            Item.DeleteAll(id);
+            return RedirectToAction("index", "categories");
+        }
+
+        [HttpPost("/items/{id}/delete")]
+        public ActionResult DeleteItem(int id)
+        {
+          Item thisItem = Item.Find(id);
+          int categoryId = thisItem.GetCategoryId();
+          Item.DeleteItem(id);
+          return RedirectToAction("CategoryDetails", "categories", new {Id = thisItem.GetCategoryId()});
         }
 
     }

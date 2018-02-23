@@ -100,15 +100,41 @@ namespace ToDoList.Models
       return allItems;
     }
 
-    public static void DeleteAll()
+    public static void DeleteAll(int id)
    {
      MySqlConnection conn = DB.Connection();
      conn.Open();
 
      var cmd = conn.CreateCommand() as MySqlCommand;
-     cmd.CommandText = @"DELETE FROM items;";
+     cmd.CommandText = @"DELETE FROM items WHERE category_id = @id;";
 
-     cmd.ExecuteNonQuery();
+     MySqlParameter thisId = new MySqlParameter();
+     thisId.ParameterName= "@id";
+     thisId.Value = id;
+     cmd.Parameters.Add(thisId);
+     var rdr = cmd.ExecuteReader() as MySqlDataReader;
+     conn.Close();
+
+     if (conn != null)
+     {
+       conn.Dispose();
+     }
+    }
+
+    public static void DeleteItem(int id)
+    {
+     MySqlConnection conn = DB.Connection();
+     conn.Open();
+
+     var cmd = conn.CreateCommand() as MySqlCommand;
+     cmd.CommandText = @"DELETE FROM items WHERE id = @id;";
+
+     MySqlParameter thisId = new MySqlParameter();
+     thisId.ParameterName = "@id";
+     thisId.Value = id;
+     cmd.Parameters.Add(thisId);
+     var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
 
      conn.Close();
      if (conn != null)
@@ -191,29 +217,37 @@ namespace ToDoList.Models
      return foundItem;
    }
 
-    public static List<Item> DateDesc()
-      {
-          List<Item> allItems = new List<Item> {};
-          MySqlConnection conn = DB.Connection();
-          conn.Open();
-          MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-          cmd.CommandText = @"SELECT * FROM items ORDER BY due_date ASC;" ;
-          MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
-          while(rdr.Read())
-          {
-            int itemId = rdr.GetInt32(0);
-            string itemDescription = rdr.GetString(1);
-            DateTime itemDate = rdr.GetDateTime(2);
-            Item newItem = new Item(itemDescription, itemDate, itemId);
-            allItems.Add(newItem);
-          }
-          conn.Close();
-          if (conn != null)
-          {
-              conn.Dispose();
-          }
-          return allItems;
-      }
+
+  public static List<Item> ItemsByCategory(int id)
+    {
+        List<Item> categoryItems = new List<Item> {};
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"SELECT * FROM items WHERE category_id = @id ORDER BY due_date ASC;" ;
+
+        MySqlParameter thisId = new MySqlParameter();
+        thisId.ParameterName = "@id";
+        thisId.Value = id;
+        cmd.Parameters.Add(thisId);
+        var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+        while(rdr.Read())
+        {
+          int itemId = rdr.GetInt32(0);
+          string itemDescription = rdr.GetString(1);
+          DateTime itemDate = rdr.GetDateTime(2);
+          int categoryId = rdr.GetInt32(3);
+          Item newItem = new Item(itemDescription, itemDate, categoryId, itemId);
+          categoryItems.Add(newItem);
+        }
+        conn.Close();
+        if (conn != null)
+        {
+            conn.Dispose();
+        }
+        return categoryItems;
+    }
 
     public void Edit(string newDescription)
       {

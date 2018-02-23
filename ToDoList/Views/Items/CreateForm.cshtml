@@ -1,7 +1,8 @@
-<h1>To Do List</h1>
-<form action="/items" method="post">
+<h1>Create New Item For @Model.GetName()</h1>
+<form action="/items/new" method="post">
   <label for="new-item">Item description:</label>
   <input id="new-item" name="new-item" type="text">
   <input id="due-date" name="due-date" type="date">
+  <input type="hidden" name="category_id" value="@Model.GetId()">
   <button type="submit">Submit</button>
 </form>

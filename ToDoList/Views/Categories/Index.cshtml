@@ -1,0 +1,10 @@
+<h1>ToDo List</h1>
+<h2>Categories</h2>
+@foreach(var category in Model)
+{
+  <h4><a href="/category/@category.GetId()">@category.GetName()</a></h4>
+
+}
+<form class="" action="/category/new" method="get">
+  <button type="submit" name="button">Create New Category</button>
+</form>
