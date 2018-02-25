@@ -36,22 +36,23 @@ namespace ToDoList.Controllers
           return RedirectToAction("CreateForm","items", id);
         }
 
-        [HttpGet("/category/{id}")]
-        public ActionResult CategoryDetails(int id)
-        {
-          Category thisCategory = Category.Find(id);
-          List<Item> categoryItems = Item.ItemsByCategory(id);
-          Dictionary<string, object> CategoryItemDict = new Dictionary <string, object>();
-          CategoryItemDict.Add("categoryName", thisCategory);
-          CategoryItemDict.Add("categoryItems", categoryItems);
-          return View(CategoryItemDict);
-        }
+        // [HttpGet("/category/{id}")]
+        // public ActionResult CategoryDetails(int id)
+        // {
+        //   Category thisCategory = Category.Find(id);
+        //   List<Item> categoryItems = Item.ItemsByCategory(id);
+        //   Dictionary<string, object> CategoryItemDict = new Dictionary <string, object>();
+        //   CategoryItemDict.Add("categoryName", thisCategory);
+        //   CategoryItemDict.Add("categoryItems", categoryItems);
+        //   return View(CategoryItemDict);
+        // }
 
         [HttpPost("/category/{id}/delete_category")]
         public ActionResult CategoryDelete(int id)
         {
-          Item.DeleteAll(id);
-          Category.DeleteCategory(id);
+          Item.DeleteAllByCategory(id);
+          Category newCategory = Category.Find(id);
+          newCategory.DeleteCategory();
           List<Category> allCategories = Category.GetAll();
           return View("index", allCategories);
         }

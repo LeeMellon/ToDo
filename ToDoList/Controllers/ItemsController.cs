@@ -43,18 +43,18 @@ namespace ToDoList.Controllers
         [HttpPost("/items/{id}/delete_all")]
         public ActionResult DeleteAll(int id)
         {
-            Item.DeleteAll(id);
+            Item.DeleteAllByCategory(id);
             return RedirectToAction("index", "categories");
         }
 
-        [HttpPost("/items/{id}/delete")]
-        public ActionResult DeleteItem(int id)
-        {
-          Item thisItem = Item.Find(id);
-          int categoryId = thisItem.GetCategoryId();
-          Item.DeleteItem(id);
-          return RedirectToAction("CategoryDetails", "categories", new {Id = thisItem.GetCategoryId()});
-        }
+        // [HttpPost("/items/{id}/delete")]
+        // public ActionResult DeleteItem(int id)
+        // {
+        //   Item thisItem = Item.Find(id);
+        //   int categoryId = thisItem.GetCategoryId();
+        //   Item.DeleteItem(id);
+        //   return RedirectToAction("CategoryDetails", "categories", new {Id = thisItem.GetCategoryId()});
+        // }
 
     }
 }
