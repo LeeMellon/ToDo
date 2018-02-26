@@ -123,7 +123,7 @@ public static void DeleteAll()
         MySqlConnection conn = DB.Connection();
         conn.Open();
         var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"DELETE FROM categories; ALTER TABLE table_name AUTO_INCREMENT = 1;";
+        cmd.CommandText = @"DELETE FROM categories;";
         cmd.ExecuteNonQuery();
         conn.Close();
         if (conn != null)
@@ -131,6 +131,8 @@ public static void DeleteAll()
                 conn.Dispose();
         }
 }
+
+ // ALTER TABLE categories AUTO_INCREMENT = 1;
 
 public static void DeleteItem(int id)
 {

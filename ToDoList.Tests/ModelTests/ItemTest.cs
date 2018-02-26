@@ -6,14 +6,14 @@ using ToDoList.Models;
 namespace ToDoList.Tests
 {
 [TestClass]
-public class ItemTest : IDisposable
+public class ItemTests : IDisposable
 {
 public void Dispose()
 {
         Item.DeleteAll();
         Category.DeleteAll();
 }
-public void ItemTests()
+public ItemTests()
 {
         DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=todo_test;";
 }

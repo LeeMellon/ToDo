@@ -18,10 +18,12 @@ namespace ToDoList.Controllers
         public ActionResult Create()
         {
           int formId = Convert.ToInt32(Request.Form["category_id"]);
+          Category thisCategory = Category.Find(formId);
           string formDate = Request.Form["due-date"];
           DateTime newDate = DateTime.Parse(formDate);
-          Item newItem = new Item (Request.Form["new-item"], newDate, formId);
+          Item newItem = new Item (Request.Form["new-item"], newDate);
           newItem.Save();
+          thisCategory.AddItem(newItem);
           return RedirectToAction("Index","categories");
         }
 

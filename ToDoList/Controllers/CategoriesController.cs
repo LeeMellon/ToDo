@@ -40,7 +40,7 @@ namespace ToDoList.Controllers
         public ActionResult CategoryDetails(int id)
         {
           Category thisCategory = Category.Find(id);
-          List<Item> categoryItems = Item.ItemsByCategory(id);
+          List<Item> categoryItems = thisCategory.GetItems();
           Dictionary<string, object> CategoryItemDict = new Dictionary <string, object>();
           CategoryItemDict.Add("categoryName", thisCategory);
           CategoryItemDict.Add("categoryItems", categoryItems);

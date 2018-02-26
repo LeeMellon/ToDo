@@ -120,7 +120,7 @@ public static void DeleteAll()
         MySqlConnection conn = DB.Connection();
         conn.Open();
         var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"DELETE FROM items;";
+        cmd.CommandText = @"DELETE FROM items; DELETE FROM categories_items WHERE item_id ;";
         cmd.ExecuteNonQuery();
         conn.Close();
         if (conn != null)
@@ -239,6 +239,40 @@ public void Edit(string newDescription)
                 conn.Dispose();
         }
 }
+
+
+// public static List<Item> ItemsByCategory(int id)
+//   {
+//       List<Item> categoryItems = new List<Item> {};
+//       MySqlConnection conn = DB.Connection();
+//       conn.Open();
+//       var cmd = conn.CreateCommand() as MySqlCommand;
+//       cmd.CommandText = @"SELECT * FROM items WHERE category_id = @id ORDER BY due_date ASC;" ;
+//
+//       MySqlParameter thisId = new MySqlParameter();
+//       thisId.ParameterName = "@id";
+//       thisId.Value = id;
+//       cmd.Parameters.Add(thisId);
+//       var rdr = cmd.ExecuteReader() as MySqlDataReader;
+//
+//       while(rdr.Read())
+//       {
+//         int itemId = rdr.GetInt32(0);
+//         string itemDescription = rdr.GetString(1);
+//         DateTime itemDate = rdr.GetDateTime(2);
+//         int categoryId = rdr.GetInt32(3);
+//         Item newItem = new Item(itemDescription, itemDate, categoryId, itemId);
+//         categoryItems.Add(newItem);
+//       }
+//       conn.Close();
+//       if (conn != null)
+//       {
+//           conn.Dispose();
+//       }
+//       return categoryItems;
+//   }
+
+
 
 public void AddCategory(Category newCategory)
 {

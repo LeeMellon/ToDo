@@ -13,7 +13,7 @@ public void Dispose()
         Item.DeleteAll();
         Category.DeleteAll();
 }
-public void CategoryTest()
+public CategoryTests()
 {
         DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=todo_test;";
 }
