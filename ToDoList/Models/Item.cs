@@ -136,9 +136,12 @@ public void DeleteItem()
       var cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"DELETE FROM items WHERE id = @ItemId; DELETE FROM categories_items WHERE item_id = @ItemId;";
 
+      System.Console.WriteLine("Here");
+
+
       MySqlParameter itemIdParameter = new MySqlParameter();
       itemIdParameter.ParameterName = "@ItemId";
-      itemIdParameter.Value = this.GetId();;
+      itemIdParameter.Value = this.GetId();
       cmd.Parameters.Add(itemIdParameter);
 
       cmd.ExecuteNonQuery();
@@ -147,6 +150,42 @@ public void DeleteItem()
         conn.Close();
       }
     }
+
+public void DeleteItemCategory(int catId)
+{
+  MySqlConnection conn = DB.Connection();
+  conn.Open();
+  var cmd = conn.CreateCommand() as MySqlCommand;
+  cmd.CommandText = @"DELETE FROM categories_items WHERE item_id = @ItemId && category_id = @CategoryId; IF NOT EXISTS (SELECT 1 FROM categories_items WHERE item_id = @ItemId) BEGIN DELETE FROM items WHERE id = @ItemId END";
+
+
+  MySqlParameter itemIdParameter = new MySqlParameter();
+  itemIdParameter.ParameterName = "@ItemId";
+  itemIdParameter.Value = this.GetId();
+  cmd.Parameters.Add(itemIdParameter);
+
+  MySqlParameter categoryIdParameter = new MySqlParameter();
+  categoryIdParameter.ParameterName = "@CategoryId";
+  categoryIdParameter.Value = catId;
+  cmd.Parameters.Add(categoryIdParameter);
+
+  cmd.ExecuteNonQuery();
+  if (conn != null)
+  {
+    conn.Close();
+  }
+
+  // MySqlConnection idConn = DB.Connection();
+  // idConn.Open();
+  // var idCheck = idConn.CreateCommand() as MySqlCommand;
+  // idCheck.CommandText = @"";
+  //
+  // idCheck.ExecuteNonQuery();
+  // if (conn != null)
+  // {
+  //   conn.Close();
+  // }
+}
 
 public void Save()
 {
@@ -238,6 +277,7 @@ public void Edit(string newDescription)
         {
                 conn.Dispose();
         }
+
 }
 
 
